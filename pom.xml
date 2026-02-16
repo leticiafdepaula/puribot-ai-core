@@ -97,26 +97,32 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.2</version>
 				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</path>
-					</annotationProcessorPaths>
+					<archive>
+						<manifestEntries>
+							<Author>Le (Brain of Puribot)</Author>
+							<Project-Purpose>Protection against ethical fraud and neurodivergent support</Project-Purpose>
+							<System-Icon>🍮 (Pompompurin-Pink-Shield)</System-Icon>
+							<Legal-Notice>Property of Le. Unauthorized use is a violation of Intellectual Property.</Legal-Notice>
+							<Version>${project.version}</Version>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<source>17</source> <target>17</target>
 				</configuration>
 			</plugin>
 		</plugins>

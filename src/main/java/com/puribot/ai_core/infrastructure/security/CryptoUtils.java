@@ -1,4 +1,4 @@
-package com.puribot.ai_core.security;
+package com.puribot.ai_core.infrastructure.security;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
