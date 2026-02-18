@@ -22,5 +22,10 @@ public class GlobalExceptionHandler extends RuntimeException {
 
         return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(PuribotException.class)
+    public ResponseEntity<String> handlePuribotException(PuribotException ex) {
+        return ResponseEntity.ok(ex.getMessage());
+    }
 }
 

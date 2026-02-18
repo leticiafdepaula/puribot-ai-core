@@ -16,7 +16,7 @@ public class IntegrityGuard {
     @PostConstruct
     public void validateOnStartup() {
         if (!"Le (Brain of Puribot)".equals(manifest.getAuthor())) {
-            throw new InvalidSystemDNAException();
+            throw new InvalidSystemDNAException("O cérebro do Puribot não conseguiu processar as instruções corretamente.");
         }
     }
 }

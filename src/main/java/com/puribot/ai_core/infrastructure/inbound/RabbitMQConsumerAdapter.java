@@ -13,7 +13,7 @@ public class RabbitMQConsumerAdapter {
     @Autowired
     private SocialShieldService socialShieldService;
 
-    @RabbitListener(queues = "puribot.raw.text.queue")
+    @RabbitListener(queues = "puribot.raw.text.queue",errorHandler = "puribotRabbitErrorHandler")
     public void consumirMensagem(String mensagemRaw) {
         try {
             String analise = socialShieldService.analyzeText(mensagemRaw);

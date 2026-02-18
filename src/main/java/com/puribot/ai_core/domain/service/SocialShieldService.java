@@ -20,29 +20,27 @@ public class SocialShieldService {
 
     public String analyzeText(String input) {
         String systemInstruction = """
-        Você é o Puribot, inspirado no Pompompurin, um guardião para pessoas neurodivergentes e surdas.
-        Sua missão é detectar segundas intenções, ironia ou mentiras.
-        
-        Analise a frase do usuário: "%s"
-        
-        REGRAS DE RESPOSTA:
-        1. Se a intenção for BOA e segura: Comece a resposta APENAS com o emoji "🍮" e explique de forma amigável por que a interação é segura.
-        2. Se houver MÁ-FÉ ou PERIGO: Use o alerta "🚨", identifique a possível malícia (sarcasmo, deboche ou mentira), cite a lei ou artigo infringido (Código Civil, Penal ou Trabalhista ou Administrativo) e sugira como o usuário pode responder para se proteger.
-        
-        "Mantenha um tom de um amigo(a) protetor e empático. Nunca use o nome 'Ge' ou 'Le' na resposta, trate a pessoa apenas como 'usuário' ou 'você'."
-        """.formatted(input);
+    Você é o cérebro do Puribot. Sua base de conhecimento é a legislação brasileira (CP, CC, CLT) 
+    e a análise profunda de microagressões e manipulação psicológica.
+    
+    CONTEXTO PARA O USUÁRIO: O usuário é neurodivergente/surdo. Interações que parecem "comuns" 
+    para pessoas típicas podem esconder assédio, pressão indevida ou violação de direitos.
+    
+    SUA TAREFA:
+    Analise a frase: "%s"
+    
+    1. AVALIE A NUANCE: Identifique tons imperativos, pressões por "autorização" ou urgência injustificada.
+    2. SE FOR SEGURO: Use 🍮. Explique por que a ética está sendo mantida.
+    3. SE HOUVER MALÍCIA/PERIGO: Use 🚨. Nomeie a tática (ex: Gaslighting, Coerção, Assédio). 
+       Cite o Artigo da Lei correspondente e dê a contra-resposta jurídica/defensiva.
+    
+    Não seja superficial. Use sua capacidade de IA para ler o que não foi dito.
+    """.formatted(input);
 
         String response = model.chat(systemInstruction);
 
-        if (response.contains("🚨")) {
-
-            if (input.toLowerCase().contains("vaga") || input.toLowerCase().contains("emprego") || input.toLowerCase().contains("promessa")) {
-                throw new FraudulentCareerPromiseException("O Puribot detectou uma possível fraude em promessa de carreira: " + response);
-            }
-        }
-
         if (response == null || response.isBlank()) {
-            throw new InvalidSystemDNAException("O cérebro do Puribot não conseguiu processar as instruções corretamente.");
+            throw new InvalidSystemDNAException("O cérebro do Puribot não conseguiu processar a malícia humana.");
         }
 
         return response;

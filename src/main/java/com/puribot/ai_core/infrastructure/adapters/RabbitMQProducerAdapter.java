@@ -1,5 +1,6 @@
 package com.puribot.ai_core.infrastructure.adapters;
 
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
