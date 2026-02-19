@@ -27,5 +27,16 @@ public class GlobalExceptionHandler extends RuntimeException {
     public ResponseEntity<String> handlePuribotException(PuribotException ex) {
         return ResponseEntity.ok(ex.getMessage());
     }
+
+    @ExceptionHandler(FraudulentCareerPromiseException.class)
+    public ResponseEntity<Map<String, Object>> handleAbuso(FraudulentCareerPromiseException ex) {
+        Map<String, Object> response = new LinkedHashMap<>();
+
+        response.put("puribot_alert", "💢💢💢");
+        response.put("analise", ex.getMessage());
+        response.put("acao", "Verificar registro no CRP e preparar defesa.");
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
 

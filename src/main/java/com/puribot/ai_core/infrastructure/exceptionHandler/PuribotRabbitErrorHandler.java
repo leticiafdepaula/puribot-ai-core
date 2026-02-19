@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class PuribotRabbitErrorHandler implements RabbitListenerErrorHandler {
 
     @Override
-    public Object handleError(Message amqpMessage, org.springframework.messaging.Message<?> message,
-                              ListenerExecutionFailedException exception) {
+    public Object handleError(Message amqpMessage, Channel channel, org.springframework.messaging.Message<?> message,
+                              ListenerExecutionFailedException exception) throws Exception {
 
         if (exception.getCause() instanceof PuribotException) {
             return null;

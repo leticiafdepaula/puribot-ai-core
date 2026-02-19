@@ -2,6 +2,7 @@ package com.puribot.ai_core.domain.service;
 
 import com.puribot.ai_core.domain.exceptions.FraudulentCareerPromiseException;
 import com.puribot.ai_core.domain.exceptions.InvalidSystemDNAException;
+import com.puribot.ai_core.domain.exceptions.PuribotException;
 import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,30 +20,36 @@ public class SocialShieldService {
     }
 
     public String analyzeText(String input) {
-        String systemInstruction = """
-    Você é o cérebro do Puribot. Sua base de conhecimento é a legislação brasileira (CP, CC, CLT) 
-    e a análise profunda de microagressões e manipulação psicológica.
-    
-    CONTEXTO PARA O USUÁRIO: O usuário é neurodivergente/surdo. Interações que parecem "comuns" 
-    para pessoas típicas podem esconder assédio, pressão indevida ou violação de direitos.
-    
-    SUA TAREFA:
-    Analise a frase: "%s"
-    
-    1. AVALIE A NUANCE: Identifique tons imperativos, pressões por "autorização" ou urgência injustificada.
-    2. SE FOR SEGURO: Use 🍮. Explique por que a ética está sendo mantida.
-    3. SE HOUVER MALÍCIA/PERIGO: Use 🚨. Nomeie a tática (ex: Gaslighting, Coerção, Assédio). 
-       Cite o Artigo da Lei correspondente e dê a contra-resposta jurídica/defensiva.
-    
-    Não seja superficial. Use sua capacidade de IA para ler o que não foi dito.
-    """.formatted(input);
-
-        String response = model.chat(systemInstruction);
+        String crp = extractCRP(input);
+        String response = model.chat(getPuribotBrainPrompt(input, crp));
 
         if (response == null || response.isBlank()) {
-            throw new InvalidSystemDNAException("O cérebro do Puribot não conseguiu processar a malícia humana.");
+            throw new InvalidSystemDNAException("Cérebro offline.");
         }
 
+        if (response.contains("💢")) {
+            if (input.toLowerCase().contains("psicólog") || response.contains("CRP")) {
+                throw new FraudulentCareerPromiseException(response);
+            }
+            throw new PuribotException(response);
+        }
         return response;
+    }
+
+    private String extractCRP(String input) {
+        var pattern = java.util.regex.Pattern.compile("(?i)CRP\\s*[-\\/]?\\s*\\d{2}\\/\\d+");
+        var matcher = pattern.matcher(input);
+        return matcher.find() ? matcher.group() : "Nenhum CRP explícito.";
+    }
+
+    private String getPuribotBrainPrompt(String input, String crp) {
+        return "Você é o cérebro do Puribot. Sua base é a legislação (CP, CC, CLT) e análise de microagressões. " +
+                "CONTEXTO: Usuário neurodivergente/surdo. Identifique assédio e violação de direitos. " +
+                "TAREFA: Analise: \"" + input + "\". " +
+                "1. AVALIE A NUANCE: Identifique tons imperativos e pressões. Priorize o qualitativo. " +
+                "2. SE FOR SEGURO: Use 🍮. Explique de forma fofa por que a ética está mantida. " +
+                "3. SE HOUVER MALÍCIA/ABUSO: Use 💢. Nomeie a tática (Gaslighting, Coerção) e cite a Lei. " +
+                "REGRA DE RIGOR PROFISSIONAL: Se for profissional de saúde e não deu o CRP, use 💢 e exija. " +
+                "Com CRP (" + crp + "), analise a dignidade da fala. Não seja superficial.";
     }
 }
