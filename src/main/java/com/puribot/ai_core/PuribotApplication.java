@@ -3,14 +3,9 @@ package com.puribot.ai_core;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @EnableRabbit
-@SpringBootApplication(exclude = {
-		DataSourceAutoConfiguration.class,
-		SecurityAutoConfiguration.class
-})
+@SpringBootApplication
 public class PuribotApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PuribotApplication.class, args);

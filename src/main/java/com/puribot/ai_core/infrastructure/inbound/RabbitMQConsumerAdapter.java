@@ -16,7 +16,8 @@ public class RabbitMQConsumerAdapter {
     @RabbitListener(queues = "puribot.raw.text.queue",errorHandler = "puribotRabbitErrorHandler")
     public void consumirMensagem(String mensagemRaw) {
         try {
-            String analise = socialShieldService.analyzeText(mensagemRaw);
+
+            String analise = socialShieldService.analyzeText(mensagemRaw, "Fila RabbitMQ", "Sistema Automático");
 
         } catch (FraudulentCareerPromiseException e) {
             throw new AmqpRejectAndDontRequeueException("Alerta de Fraude: " + e.getMessage());
